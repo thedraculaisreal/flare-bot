@@ -42,5 +42,12 @@ void Memory::find_exe()
 		return;
 	}
 
-	base_address = get_module_base_address("Flare", pid);
+	base_address = get_module_base_address("flare.exe", pid);
+	if (!base_address)
+	{
+		printf("failed to get base_address of flare.exe exiting...\n");
+		CloseHandle(process_handle);
+		exit(1);
+	}
+	printf("Base Address: %d", base_address);
 }
