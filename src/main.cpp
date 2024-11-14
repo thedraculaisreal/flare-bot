@@ -3,5 +3,7 @@
 int main()
 {
 	mem.find_exe();
+	mem.read_mem();
+
 	return 0;
 }
