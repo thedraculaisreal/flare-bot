@@ -53,21 +53,17 @@ void Memory::find_exe()
 
 void Memory::read_mem()
 {
-	float x_value{ };
-	float y_value{ };
-	uintptr_t local_player;
-	ReadProcessMemory(process_handle, reinterpret_cast<LPCVOID>(base_address + 0x1CD278), &local_player, sizeof(local_player), NULL);
-
-	uintptr_t local_player_x = (local_player + 0x250);
-	uintptr_t local_player_y = (local_player + 0x24C);
-
-	ReadProcessMemory(process_handle, reinterpret_cast<LPCVOID>(local_player_x), &x_value, sizeof(x_value), NULL);
-	ReadProcessMemory(process_handle, reinterpret_cast<LPCVOID>(local_player_y), &y_value, sizeof(y_value), NULL);
+	ReadProcessMemory(process_handle, reinterpret_cast<LPCVOID>(base_address + 0x1CD278), &player.local_player, sizeof(player.local_player), NULL);
+	ReadProcessMemory(process_handle, reinterpret_cast<LPCVOID>(base_address + 0x1CD29C), &player.base_pointer_cursor, sizeof(player.base_pointer_cursor), NULL);
+	ReadProcessMemory(process_handle, reinterpret_cast<LPCVOID>(player.base_pointer_cursor + 0x868), &player.x_value_cursor, sizeof(player.x_value_cursor), NULL);
+	ReadProcessMemory(process_handle, reinterpret_cast<LPCVOID>(player.base_pointer_cursor + 0x86C), &player.y_value_cursor, sizeof(player.y_value_cursor), NULL);
+	ReadProcessMemory(process_handle, reinterpret_cast<LPCVOID>(player.local_player + 0x250), &player.x_value, sizeof(player.x_value), NULL);
+	ReadProcessMemory(process_handle, reinterpret_cast<LPCVOID>(player.local_player + 0x24C), &player.y_value, sizeof(player.y_value), NULL);
 
 	std::cout << "base_address: " << std::hex << mem.base_address << "\n";
-	std::cout << "local_player addr: " << std::hex << local_player << '\n';
-	std::cout << "local_player_x addr: " << std::hex << local_player_x << '\n';
-	std::cout << "local_player_y addr: " << std::hex << local_player_y << '\n';
-	std::cout << "x_value: " << std::dec << x_value << '\n';
-	std::cout << "y_value: " << std::dec << y_value << '\n';
+	std::cout << "local_player addr: " << std::hex << player.local_player << '\n';
+	std::cout << "cursor x value: " << std::dec << player.x_value_cursor << '\n';
+	std::cout << "cursor y value: " << std::dec << player.y_value_cursor << '\n';
+	std::cout << "x_value: " << std::dec << player.x_value << '\n';
+	std::cout << "y_value: " << std::dec << player.y_value << '\n';
 }

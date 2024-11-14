@@ -16,3 +16,19 @@ public:
 };
 
 inline Memory mem;
+
+class Player
+{
+public:
+
+	float x_value{ NULL };
+	float y_value{ NULL };
+	int x_value_cursor{ NULL };
+	int y_value_cursor{ NULL };
+
+	uintptr_t local_player{ NULL };
+	uintptr_t base_pointer_cursor{ NULL };
+
+};
+
+inline Player player;
