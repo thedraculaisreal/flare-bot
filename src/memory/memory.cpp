@@ -53,17 +53,40 @@ void Memory::find_exe()
 
 void Memory::read_mem()
 {
+	
 	ReadProcessMemory(process_handle, reinterpret_cast<LPCVOID>(base_address + 0x1CD278), &player.local_player, sizeof(player.local_player), NULL);
 	ReadProcessMemory(process_handle, reinterpret_cast<LPCVOID>(base_address + 0x1CD29C), &player.base_pointer_cursor, sizeof(player.base_pointer_cursor), NULL);
 	ReadProcessMemory(process_handle, reinterpret_cast<LPCVOID>(player.base_pointer_cursor + 0x868), &player.x_value_cursor, sizeof(player.x_value_cursor), NULL);
 	ReadProcessMemory(process_handle, reinterpret_cast<LPCVOID>(player.base_pointer_cursor + 0x86C), &player.y_value_cursor, sizeof(player.y_value_cursor), NULL);
 	ReadProcessMemory(process_handle, reinterpret_cast<LPCVOID>(player.local_player + 0x250), &player.x_value, sizeof(player.x_value), NULL);
 	ReadProcessMemory(process_handle, reinterpret_cast<LPCVOID>(player.local_player + 0x24C), &player.y_value, sizeof(player.y_value), NULL);
+	ReadProcessMemory(process_handle, reinterpret_cast<LPCVOID>(0x0F20FAE0), &entity.x_value, sizeof(entity.x_value), NULL);
+	ReadProcessMemory(process_handle, reinterpret_cast<LPCVOID>(0x0F20FADC), &entity.y_value, sizeof(entity.y_value), NULL);
 
 	std::cout << "base_address: " << std::hex << mem.base_address << "\n";
 	std::cout << "local_player addr: " << std::hex << player.local_player << '\n';
 	std::cout << "cursor x value: " << std::dec << player.x_value_cursor << '\n';
 	std::cout << "cursor y value: " << std::dec << player.y_value_cursor << '\n';
-	std::cout << "x_value: " << std::dec << player.x_value << '\n';
-	std::cout << "y_value: " << std::dec << player.y_value << '\n';
+
+	while (true)
+	{
+		Sleep(1000);
+		std::cout << "Player coords: " << std::dec << player.x_value << ' ' << player.y_value << '\n';
+		std::cout << "Entity coords: " << std::dec << entity.x_value << ' ' << entity.y_value << '\n';
+	}
+}
+
+void Memory::write_mem()
+{
+	uintptr_t mousecursor_x = (player.base_pointer_cursor + 0x868);
+	uintptr_t mousecursor_y = (player.base_pointer_cursor + 0x86C);
+
+	int new_x = 25;
+	int new_y = 25;
+
+	WriteProcessMemory(process_handle, reinterpret_cast<LPVOID>(mousecursor_x), &new_x, sizeof(new_x), NULL);
+	WriteProcessMemory(process_handle, reinterpret_cast<LPVOID>(mousecursor_y), &new_y, sizeof(new_y), NULL);
+
+	printf("New mousecursor_x %d\n", new_x);
+	printf("New mousecursor_y %d\n", new_y);
 }

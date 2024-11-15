@@ -13,6 +13,7 @@ public:
 	uintptr_t base_address;
 	void read_mem();
 	void find_exe();
+	void write_mem();
 };
 
 inline Memory mem;
@@ -25,10 +26,19 @@ public:
 	float y_value{ NULL };
 	int x_value_cursor{ NULL };
 	int y_value_cursor{ NULL };
-
 	uintptr_t local_player{ NULL };
 	uintptr_t base_pointer_cursor{ NULL };
 
 };
 
 inline Player player;
+
+class Entity
+{
+public:
+
+	float x_value;
+	float y_value;
+};
+
+inline Entity entity;
