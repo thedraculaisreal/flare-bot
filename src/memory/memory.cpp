@@ -67,13 +67,8 @@ void Memory::read_mem()
 	std::cout << "local_player addr: " << std::hex << player.local_player << '\n';
 	std::cout << "cursor x value: " << std::dec << player.x_value_cursor << '\n';
 	std::cout << "cursor y value: " << std::dec << player.y_value_cursor << '\n';
-
-	while (true)
-	{
-		Sleep(1000);
-		std::cout << "Player coords: " << std::dec << player.x_value << ' ' << player.y_value << '\n';
-		std::cout << "Entity coords: " << std::dec << entity.x_value << ' ' << entity.y_value << '\n';
-	}
+	std::cout << "Player coords: " << std::dec << player.x_value << ' ' << player.y_value << '\n';
+	std::cout << "Entity coords: " << std::dec << entity.x_value << ' ' << entity.y_value << '\n';
 }
 
 void Memory::write_mem()
@@ -81,12 +76,23 @@ void Memory::write_mem()
 	uintptr_t mousecursor_x = (player.base_pointer_cursor + 0x868);
 	uintptr_t mousecursor_y = (player.base_pointer_cursor + 0x86C);
 
-	int new_x = 25;
-	int new_y = 25;
+	int new_x;
+	int new_y;
 
-	WriteProcessMemory(process_handle, reinterpret_cast<LPVOID>(mousecursor_x), &new_x, sizeof(new_x), NULL);
-	WriteProcessMemory(process_handle, reinterpret_cast<LPVOID>(mousecursor_y), &new_y, sizeof(new_y), NULL);
+	while (true)
+	{
+		Sleep(1000);
+		if (player.y_value > entity.y_value)
+		{
+			new_x = 510;
+			new_y = 220;
+		}
 
-	printf("New mousecursor_x %d\n", new_x);
-	printf("New mousecursor_y %d\n", new_y);
+		WriteProcessMemory(process_handle, reinterpret_cast<LPVOID>(mousecursor_x), &new_x, sizeof(new_x), NULL);
+		WriteProcessMemory(process_handle, reinterpret_cast<LPVOID>(mousecursor_y), &new_y, sizeof(new_y), NULL);
+
+		printf("New mousecursor_x %d\n", new_x);
+		printf("New mousecursor_y %d\n", new_y);
+	}
+	
 }
